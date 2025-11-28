@@ -1,0 +1,186 @@
+2025-11-27 20:42:09.476 [info] [main] Log level: Info
+2025-11-27 20:42:09.477 [info] [main] Validating found git in: "C:\Program Files\Git\cmd\git.exe"
+2025-11-27 20:42:09.477 [info] [main] Using git "2.51.2.windows.1" from "C:\Program Files\Git\cmd\git.exe"
+2025-11-27 20:42:09.477 [info] [Model][doInitialScan] Initial repository scan started
+2025-11-27 20:42:11.631 [info] > git rev-parse --show-toplevel [7151ms]
+2025-11-27 20:42:23.689 [info] > git rev-parse --git-dir --git-common-dir --show-superproject-working-tree [10007ms]
+2025-11-27 20:42:24.293 [info] [Model][openRepository] Opened repository (path): c:\Users\Lenovo\Downloads\Gamified
+2025-11-27 20:42:24.293 [info] [Model][openRepository] Opened repository (real path): c:\Users\Lenovo\Downloads\Gamified
+2025-11-27 20:42:24.294 [info] [Model][openRepository] Opened repository (kind): repository
+2025-11-27 20:42:36.343 [info] > git rev-parse --show-toplevel [3363ms]
+2025-11-27 20:42:36.343 [info] fatal: not a git repository (or any of the parent directories): .git
+2025-11-27 20:42:36.345 [info] > git config --get commit.template [8140ms]
+2025-11-27 20:42:39.427 [info] > git check-ignore -v -z --stdin [3111ms]
+2025-11-27 20:42:40.062 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [1577ms]
+2025-11-27 20:42:40.213 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 20:42:40.238 [info] > git rev-parse --show-toplevel [2813ms]
+2025-11-27 20:42:40.259 [info] [Model][doInitialScan] Initial repository scan completed - repositories (1), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2025-11-27 20:42:41.045 [info] > git rev-parse refs/remotes/origin/main [832ms]
+2025-11-27 20:42:49.996 [info] > git status -z -uall [8915ms]
+2025-11-27 20:42:50.512 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [9372ms]
+2025-11-27 20:42:58.314 [info] > git config --get commit.template [6351ms]
+2025-11-27 20:42:58.316 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [7054ms]
+2025-11-27 20:43:06.307 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [9933ms]
+2025-11-27 20:43:11.808 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 20:43:14.028 [info] > git config --get --local branch.main.vscode-merge-base [9184ms]
+2025-11-27 20:43:26.120 [info] > git rev-parse refs/remotes/origin/main [14312ms]
+2025-11-27 20:43:29.324 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/origin/main refs/remotes/origin/main [7198ms]
+2025-11-27 20:43:40.301 [info] > git status -z -uall [14027ms]
+2025-11-27 20:43:40.561 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [13207ms]
+2025-11-27 20:43:53.873 [info] > git merge-base refs/heads/main refs/remotes/origin/main [20156ms]
+2025-11-27 20:43:58.355 [info] > git merge-base refs/heads/main refs/remotes/origin/main [7062ms]
+2025-11-27 20:43:59.757 [info] > git diff --name-status -z --diff-filter=ADMR 18b5d666cb38dad8593c06d9b769a187183e1e5b...refs/remotes/origin/main [3415ms]
+2025-11-27 20:44:09.557 [info] > git diff --name-status -z --diff-filter=ADMR 18b5d666cb38dad8593c06d9b769a187183e1e5b...refs/remotes/origin/main [10748ms]
+2025-11-27 20:45:46.431 [info] > git config --get commit.template [359ms]
+2025-11-27 20:45:46.485 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [349ms]
+2025-11-27 20:45:46.519 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 20:45:46.780 [info] > git rev-parse refs/remotes/origin/main [261ms]
+2025-11-27 20:45:47.121 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [276ms]
+2025-11-27 20:45:47.150 [info] > git status -z -uall [340ms]
+2025-11-27 20:56:56.277 [info] > git config --get commit.template [439ms]
+2025-11-27 20:56:56.337 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [417ms]
+2025-11-27 20:56:56.374 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 20:56:57.120 [info] > git rev-parse refs/remotes/origin/main [749ms]
+2025-11-27 20:56:59.062 [info] > git status -z -uall [1776ms]
+2025-11-27 20:56:59.269 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1822ms]
+2025-11-27 20:57:05.794 [info] > git config --get commit.template [1425ms]
+2025-11-27 20:57:05.811 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [1359ms]
+2025-11-27 20:57:05.850 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 20:57:06.067 [info] > git rev-parse refs/remotes/origin/main [218ms]
+2025-11-27 20:57:06.346 [info] > git status -z -uall [257ms]
+2025-11-27 20:57:06.395 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [270ms]
+2025-11-27 21:02:40.734 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [6104ms]
+2025-11-27 21:02:41.253 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:02:41.262 [info] > git config --get commit.template [6809ms]
+2025-11-27 21:02:45.369 [info] > git rev-parse refs/remotes/origin/main [4116ms]
+2025-11-27 21:02:50.175 [info] > git status -z -uall [4640ms]
+2025-11-27 21:02:50.601 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [4952ms]
+2025-11-27 21:03:31.146 [info] > git config --get commit.template [5902ms]
+2025-11-27 21:03:32.082 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [6182ms]
+2025-11-27 21:03:32.513 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:03:35.920 [info] > git rev-parse refs/remotes/origin/main [3407ms]
+2025-11-27 21:03:43.713 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [6265ms]
+2025-11-27 21:03:44.045 [info] > git status -z -uall [7065ms]
+2025-11-27 21:03:51.545 [info] > git config --get commit.template [2155ms]
+2025-11-27 21:03:51.766 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [2209ms]
+2025-11-27 21:03:51.991 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:03:53.472 [info] > git rev-parse refs/remotes/origin/main [1481ms]
+2025-11-27 21:03:55.495 [info] > git status -z -uall [1834ms]
+2025-11-27 21:03:55.789 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1867ms]
+2025-11-27 21:04:20.631 [info] > git config --get commit.template [988ms]
+2025-11-27 21:04:20.939 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [996ms]
+2025-11-27 21:04:21.055 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:04:21.543 [info] > git rev-parse refs/remotes/origin/main [488ms]
+2025-11-27 21:04:22.146 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [537ms]
+2025-11-27 21:04:22.191 [info] > git status -z -uall [618ms]
+2025-11-27 21:05:46.888 [info] > git config --get commit.template [806ms]
+2025-11-27 21:05:46.934 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [794ms]
+2025-11-27 21:05:46.973 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:05:47.286 [info] > git rev-parse refs/remotes/origin/main [314ms]
+2025-11-27 21:05:47.908 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [406ms]
+2025-11-27 21:05:47.974 [info] > git status -z -uall [622ms]
+2025-11-27 21:06:07.288 [info] > git config --get commit.template [529ms]
+2025-11-27 21:06:07.302 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [496ms]
+2025-11-27 21:06:07.338 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:06:07.756 [info] > git rev-parse refs/remotes/origin/main [418ms]
+2025-11-27 21:06:08.256 [info] > git status -z -uall [454ms]
+2025-11-27 21:06:08.272 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [430ms]
+2025-11-27 21:06:16.524 [info] > git config --get commit.template [956ms]
+2025-11-27 21:06:16.615 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [1007ms]
+2025-11-27 21:06:16.638 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:06:16.906 [info] > git rev-parse refs/remotes/origin/main [268ms]
+2025-11-27 21:06:17.223 [info] > git status -z -uall [290ms]
+2025-11-27 21:06:17.258 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [288ms]
+2025-11-27 21:06:22.987 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [646ms]
+2025-11-27 21:06:23.123 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:06:23.124 [info] > git config --get commit.template [816ms]
+2025-11-27 21:06:23.853 [info] > git rev-parse refs/remotes/origin/main [730ms]
+2025-11-27 21:06:24.175 [info] > git status -z -uall [302ms]
+2025-11-27 21:06:24.238 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [330ms]
+2025-11-27 21:14:35.592 [info] > git ls-files --stage -- app/.env.local [941ms]
+2025-11-27 21:14:35.645 [info] > git show --textconv :app/.env.local [1183ms]
+2025-11-27 21:14:35.742 [info] > git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%D%n%B -z -n51 --shortstat --follow -- c:\Users\Lenovo\Downloads\Gamified\app\.env.local [1199ms]
+2025-11-27 21:14:36.205 [info] > git hash-object -t tree /dev/null [561ms]
+2025-11-27 21:14:36.206 [warning] [GitFileSystemProvider][stat] File not found - git:/c%3A/Users/Lenovo/Downloads/Gamified/app/.env.local.git?%7B%22path%22%3A%22c%3A%5C%5CUsers%5C%5CLenovo%5C%5CDownloads%5C%5CGamified%5C%5Capp%5C%5C.env.local%22%2C%22ref%22%3A%22%22%7D
+2025-11-27 21:14:36.299 [info] > git hash-object -t tree /dev/null [557ms]
+2025-11-27 21:14:36.300 [warning] [GitFileSystemProvider][readFile] File not found - git:/c%3A/Users/Lenovo/Downloads/Gamified/app/.env.local.git?%7B%22path%22%3A%22c%3A%5C%5CUsers%5C%5CLenovo%5C%5CDownloads%5C%5CGamified%5C%5Capp%5C%5C.env.local%22%2C%22ref%22%3A%22%22%7D
+2025-11-27 21:14:36.476 [info] > git hash-object -t tree /dev/null [575ms]
+2025-11-27 21:14:37.616 [info] > git blame --root --incremental 18b5d666cb38dad8593c06d9b769a187183e1e5b -- app/.env.local [1211ms]
+2025-11-27 21:14:37.617 [info] fatal: no such path app/.env.local in 18b5d666cb38dad8593c06d9b769a187183e1e5b
+2025-11-27 21:20:31.511 [info] > git config --get commit.template [2215ms]
+2025-11-27 21:20:32.207 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [1929ms]
+2025-11-27 21:20:32.395 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:20:33.442 [info] > git rev-parse refs/remotes/origin/main [1046ms]
+2025-11-27 21:20:34.862 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1248ms]
+2025-11-27 21:20:35.061 [info] > git status -z -uall [1514ms]
+2025-11-27 21:23:01.167 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [147ms]
+2025-11-27 21:23:01.188 [info] > git config --get commit.template [11347ms]
+2025-11-27 21:23:13.872 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:23:36.398 [info] > git rev-parse refs/remotes/origin/main [22526ms]
+2025-11-27 21:23:39.435 [info] > git status -z -uall [1031ms]
+2025-11-27 21:23:39.749 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1177ms]
+2025-11-27 21:23:47.548 [info] > git config --get commit.template [2613ms]
+2025-11-27 21:23:49.521 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [4053ms]
+2025-11-27 21:23:49.604 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:23:58.030 [info] > git rev-parse refs/remotes/origin/main [8426ms]
+2025-11-27 21:23:59.253 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [951ms]
+2025-11-27 21:23:59.315 [info] > git status -z -uall [1127ms]
+2025-11-27 21:28:16.285 [info] > git config --get commit.template [793ms]
+2025-11-27 21:28:16.287 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [681ms]
+2025-11-27 21:28:16.309 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:28:17.059 [info] > git rev-parse refs/remotes/origin/main [750ms]
+2025-11-27 21:28:17.642 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [483ms]
+2025-11-27 21:28:17.971 [info] > git status -z -uall [863ms]
+2025-11-27 21:28:40.187 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [1112ms]
+2025-11-27 21:28:40.307 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:28:40.321 [info] > git config --get commit.template [1314ms]
+2025-11-27 21:28:40.946 [info] > git rev-parse refs/remotes/origin/main [640ms]
+2025-11-27 21:28:41.491 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [471ms]
+2025-11-27 21:28:41.521 [info] > git status -z -uall [535ms]
+2025-11-27 21:30:10.944 [info] > git config --get commit.template [4897ms]
+2025-11-27 21:30:12.320 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [5167ms]
+2025-11-27 21:30:13.317 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:30:16.044 [info] > git rev-parse refs/remotes/origin/main [2727ms]
+2025-11-27 21:30:19.797 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [3514ms]
+2025-11-27 21:30:20.033 [info] > git status -z -uall [3866ms]
+2025-11-27 21:34:39.171 [info] > git config --get commit.template [387ms]
+2025-11-27 21:34:39.283 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [446ms]
+2025-11-27 21:34:39.321 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:34:39.565 [info] > git rev-parse refs/remotes/origin/main [243ms]
+2025-11-27 21:34:40.464 [info] > git status -z -uall [868ms]
+2025-11-27 21:34:40.505 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [873ms]
+2025-11-27 21:35:53.633 [info] > git config --get commit.template [485ms]
+2025-11-27 21:35:53.760 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [575ms]
+2025-11-27 21:35:53.796 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:35:54.014 [info] > git rev-parse refs/remotes/origin/main [219ms]
+2025-11-27 21:35:54.467 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [388ms]
+2025-11-27 21:35:54.558 [info] > git status -z -uall [509ms]
+2025-11-27 21:37:09.093 [info] > git config --get commit.template [777ms]
+2025-11-27 21:37:09.095 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [711ms]
+2025-11-27 21:37:09.129 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:37:09.398 [info] > git rev-parse refs/remotes/origin/main [269ms]
+2025-11-27 21:37:09.876 [info] > git status -z -uall [447ms]
+2025-11-27 21:37:09.909 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [431ms]
+2025-11-27 21:43:10.914 [info] > git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file - [9657ms]
+2025-11-27 21:43:10.921 [info] Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: no email was given and auto-detection is disabled
+2025-11-27 21:43:11.054 [info] > git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%D%n%B -z --shortstat --diff-merges=first-parent -n50 --skip=0 --topo-order --decorate=full --stdin [15280ms]
+2025-11-27 21:43:11.925 [info] > git config --get-all user.name [871ms]
+2025-11-27 21:43:12.960 [info] > git config --get commit.template [966ms]
+2025-11-27 21:43:12.960 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) --ignore-case refs/heads/main refs/remotes/main [884ms]
+2025-11-27 21:43:13.011 [warning] [Git][revParse] Unable to read file: ENOENT: no such file or directory, open 'c:\Users\Lenovo\Downloads\Gamified\.git\refs\remotes\origin\main'
+2025-11-27 21:43:13.426 [info] > git rev-parse refs/remotes/origin/main [415ms]
+2025-11-27 21:43:15.093 [info] > git status -z -uall [1630ms]
+2025-11-27 21:43:15.158 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1032ms]
+2025-11-27 21:43:16.875 [info] > git show -s --decorate=full --shortstat --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%D%n%B -z 18b5d666cb38dad8593c06d9b769a187183e1e5b -- [1398ms]

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import {
   ClerkProvider,
   SignInButton,
@@ -9,6 +9,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import "./globals.css";
+import ConvexClientProvider from "@/components/providers/ConvexClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,6 +18,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -32,28 +38,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <header className="border-b">
-            <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-              <h1 className="text-xl font-bold">Gamified</h1>
-              <div className="flex items-center gap-4">
-                <SignedOut>
-                  <SignInButton mode="modal" />
-                  <SignUpButton mode="modal" />
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased`}
+      >
+        <ClerkProvider>
+          <ConvexClientProvider>
+            <header className="border-b">
+              <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+                <h1 className="text-xl font-bold">Gamified</h1>
+                <div className="flex items-center gap-4">
+                  <SignedOut>
+                    <SignInButton mode="modal" forceRedirectUrl="/dashboard" />
+                    <SignUpButton mode="modal" forceRedirectUrl="/dashboard" />
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                </div>
               </div>
-            </div>
-          </header>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+            </header>
+            {children}
+          </ConvexClientProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

@@ -1,3 +1,6 @@
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -25,14 +28,26 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button className="group relative px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold text-lg transition-smooth hover:scale-105 hover:shadow-lg hover:shadow-primary/50">
-              <span className="relative z-10">Start Your Journey</span>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-hover to-secondary-hover opacity-0 group-hover:opacity-100 transition-smooth"></div>
-            </button>
+            <SignedOut>
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <button className="group relative px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold text-lg transition-smooth hover:scale-105 hover:shadow-lg hover:shadow-primary/50">
+                  <span className="relative z-10">Start Your Journey</span>
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-hover to-secondary-hover opacity-0 group-hover:opacity-100 transition-smooth"></div>
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <Link href="/dashboard">
+                <button className="group relative px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold text-lg transition-smooth hover:scale-105 hover:shadow-lg hover:shadow-primary/50">
+                  <span className="relative z-10">Go to Dashboard</span>
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-hover to-secondary-hover opacity-0 group-hover:opacity-100 transition-smooth"></div>
+                </button>
+              </Link>
+            </SignedIn>
 
-            <button className="px-8 py-4 glass rounded-xl font-semibold text-lg transition-smooth hover:scale-105 hover:border-primary/50">
+            <Link href="#features" className="px-8 py-4 glass rounded-xl font-semibold text-lg transition-smooth hover:scale-105 hover:border-primary/50 flex items-center justify-center">
               Learn More
-            </button>
+            </Link>
           </div>
 
           {/* Stats */}
@@ -59,7 +74,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="px-6 py-20 bg-bg-secondary/50">
+      <section id="features" className="px-6 py-20 bg-bg-secondary/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
             Why <span className="gradient-text">Gamified</span>?
@@ -127,9 +142,20 @@ export default function Home() {
             <p className="text-xl text-text-secondary mb-8">
               Join thousands of users who are transforming their lives, one habit at a time.
             </p>
-            <button className="px-10 py-5 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-xl transition-smooth hover:scale-105 hover:shadow-2xl hover:shadow-primary/50">
-              Get Started Free
-            </button>
+            <SignedOut>
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <button className="px-10 py-5 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-xl transition-smooth hover:scale-105 hover:shadow-2xl hover:shadow-primary/50">
+                  Get Started Free
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <Link href="/dashboard">
+                <button className="px-10 py-5 bg-gradient-to-r from-primary to-secondary rounded-xl font-bold text-xl transition-smooth hover:scale-105 hover:shadow-2xl hover:shadow-primary/50">
+                  Go to Dashboard
+                </button>
+              </Link>
+            </SignedIn>
           </div>
         </div>
       </section>
