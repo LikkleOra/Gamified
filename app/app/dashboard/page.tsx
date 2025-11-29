@@ -1,95 +1,116 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { HabitList } from "@/components/features/habits/HabitList";
-import { PomodoroTimer } from "@/components/features/pomodoro/Timer";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { CreateHabitForm } from "@/components/features/habits/CreateHabitForm";
-import { useQuery } from "convex/react";
+import { useUser } from "@clerk/nextjs";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useEffect, useState, useRef } from "react";
+import { HabitList } from "@/components/features/habits/HabitList";
+import { DailyList } from "@/components/features/dailies/DailyList";
+import { TodoList } from "@/components/features/todos/TodoList";
+import { PomodoroTimer } from "@/components/features/pomodoro/Timer";
+import { RewardShop } from "@/components/features/rewards/RewardShop";
+import { LevelUpModal } from "@/components/features/gamification/LevelUpModal";
 
 export default function DashboardPage() {
-    const [isCreating, setIsCreating] = useState(false);
+    console.log("Rendering Dashboard Page");
+    const { user } = useUser();
+    const syncUser = useMutation(api.users.syncUser);
+    const syncDailies = useMutation(api.dailies.sync);
     const userData = useQuery(api.users.get);
-    const pomodoroSessions = useQuery(api.pomodoro.getTodaySessions);
 
-    const todayPomodoroCount = pomodoroSessions?.length || 0;
-    const level = userData?.level || 1;
-    const xp = userData?.xp || 0;
-    const streak = userData?.streak || 0;
-    const xpForNextLevel = level * 1000;
-    const xpProgress = (xp % 1000) / 10; // Percentage for current level
+    const [showLevelUp, setShowLevelUp] = useState(false);
+    const [activeTab, setActiveTab] = useState<"habits" | "dailies" | "todos">("habits");
+    const prevLevelRef = useRef<number | null>(null);
+
+    // Sync User & Dailies on Load
+    useEffect(() => {
+        if (user) {
+            syncUser({
+                name: user.fullName || "User",
+                email: user.primaryEmailAddress?.emailAddress || "",
+            });
+            syncDailies(); // Check for resets
+        }
+    }, [user, syncUser, syncDailies]);
+
+    // Check for Level Up
+    useEffect(() => {
+        if (userData?.level) {
+            // Initial load, just set the ref
+            if (prevLevelRef.current === null) {
+                prevLevelRef.current = userData.level;
+            }
+            // Level increased!
+            else if (userData.level > prevLevelRef.current) {
+                setShowLevelUp(true);
+                prevLevelRef.current = userData.level;
+            }
+            // Level decreased (death), just update ref
+            else if (userData.level < prevLevelRef.current) {
+                prevLevelRef.current = userData.level;
+            }
+        }
+    }, [userData?.level]);
 
     return (
-        <div className="space-y-8">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold">Welcome back, Adventurer! 👋</h1>
-                    <p className="text-text-secondary mt-2">Here's your daily quest log.</p>
-                </div>
-                <Button variant="gamified" onClick={() => setIsCreating(true)}>
-                    <Plus className="w-4 h-4 mr-2" /> New Quest
-                </Button>
-            </div>
-
-            {isCreating && (
-                <div className="mb-6 p-4 glass rounded-xl animate-fadeIn">
-                    <CreateHabitForm onClose={() => setIsCreating(false)} />
-                </div>
+        <div className="space-y-8 pb-20">
+            {showLevelUp && userData && (
+                <LevelUpModal level={userData.level} onClose={() => setShowLevelUp(false)} />
             )}
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="glass p-6 rounded-2xl border-l-4 border-primary">
-                    <div className="text-text-secondary text-sm font-medium uppercase tracking-wider">Level</div>
-                    <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-4xl font-bold gradient-text">{level}</span>
+            {/* Focus Section */}
+            <div className="glass p-6 rounded-2xl">
+                <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold">Focus Session</h2>
+                    <span className="text-sm text-text-secondary">Earn XP while you work</span>
+                </div>
+                <PomodoroTimer />
+            </div>
+
+            {/* Mobile Tab Navigation */}
+            <div className="flex lg:hidden bg-bg-elevated p-1 rounded-xl mb-4">
+                {(["habits", "dailies", "todos"] as const).map((tab) => (
+                    <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`flex-1 py-2 rounded-lg text-sm font-bold capitalize transition-all ${activeTab === tab
+                                ? "bg-primary text-white shadow-lg"
+                                : "text-text-muted hover:text-text-primary"
+                            }`}
+                    >
+                        {tab}
+                    </button>
+                ))}
+            </div>
+
+            {/* Main RPG Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Column 1: Habits */}
+                <div className={`flex flex-col gap-4 ${activeTab === "habits" ? "block" : "hidden lg:flex"}`}>
+                    <div className="glass p-4 rounded-xl">
+                        <h2 className="text-xl font-bold mb-4">Habits</h2>
+                        <HabitList />
                     </div>
-                    <div className="mt-2 h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                        <div
-                            className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500"
-                            style={{ width: `${xpProgress}%` }}
-                        />
-                    </div>
-                    <div className="text-xs text-text-muted mt-1">{xp % 1000} / 1000 XP</div>
                 </div>
 
-                <div className="glass p-6 rounded-2xl border-l-4 border-secondary">
-                    <div className="text-text-secondary text-sm font-medium uppercase tracking-wider">Daily Streak</div>
-                    <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-4xl font-bold text-white">{streak}</span>
-                        <span className="text-sm text-text-muted">days 🔥</span>
+                {/* Column 2: Dailies */}
+                <div className={`flex flex-col gap-4 ${activeTab === "dailies" ? "block" : "hidden lg:flex"}`}>
+                    <div className="glass p-4 rounded-xl">
+                        <DailyList />
                     </div>
                 </div>
 
-                <div className="glass p-6 rounded-2xl border-l-4 border-success">
-                    <div className="text-text-secondary text-sm font-medium uppercase tracking-wider">Total XP</div>
-                    <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-4xl font-bold text-white">{xp.toLocaleString()}</span>
-                    </div>
-                </div>
-
-                <div className="glass p-6 rounded-2xl border-l-4 border-info">
-                    <div className="text-text-secondary text-sm font-medium uppercase tracking-wider">Pomodoros Today</div>
-                    <div className="mt-2 flex items-baseline gap-2">
-                        <span className="text-4xl font-bold text-white">{todayPomodoroCount}</span>
-                        <span className="text-sm text-text-muted">sessions ⏱️</span>
+                {/* Column 3: To-Dos */}
+                <div className={`flex flex-col gap-4 ${activeTab === "todos" ? "block" : "hidden lg:flex"}`}>
+                    <div className="glass p-4 rounded-xl">
+                        <TodoList />
                     </div>
                 </div>
             </div>
 
-            {/* Main Content Grid */}
-            <div className="grid lg:grid-cols-3 gap-6">
-                {/* Habits - 2 columns */}
-                <div className="lg:col-span-2 glass rounded-2xl p-6">
-                    <HabitList />
-                </div>
-
-                {/* Pomodoro Timer - 1 column */}
-                <div className="lg:col-span-1">
-                    <PomodoroTimer />
-                </div>
+            {/* Reward Shop */}
+            <div className="glass p-6 rounded-2xl">
+                <RewardShop />
             </div>
         </div>
     );

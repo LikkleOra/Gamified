@@ -40,15 +40,24 @@ export const syncUser = mutation({
                 level: 1,
                 xp: 0,
                 streak: 0,
+                gold: 0,
+                hp: 50,
+                maxHp: 50,
                 lastLoginDate: new Date().toISOString().split('T')[0],
             });
         } else {
             // Update last login if needed, or other fields
-            await ctx.db.patch(user._id, {
+            // Also ensure new fields exist for migrated users
+            const updates: any = {
                 name: args.name,
                 email: args.email,
                 lastLoginDate: new Date().toISOString().split('T')[0],
-            });
+            };
+            if (user.gold === undefined) updates.gold = 0;
+            if (user.hp === undefined) updates.hp = 50;
+            if (user.maxHp === undefined) updates.maxHp = 50;
+
+            await ctx.db.patch(user._id, updates);
         }
     },
 });

@@ -37,6 +37,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  if (!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+    console.error("MISSING CLERK PUBLISHABLE KEY");
+  } else {
+    console.log("Clerk Key Loaded:", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.substring(0, 8) + "...");
+  }
+
   return (
     <html lang="en">
       <body

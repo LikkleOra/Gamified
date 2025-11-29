@@ -4,13 +4,14 @@ import { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { X, Plus, Minus, PlusCircle } from "lucide-react";
 
 export function CreateHabitForm({ onClose }: { onClose: () => void }) {
     const create = useMutation(api.habits.create);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [xpReward, setXpReward] = useState(50);
+    const [type, setType] = useState<"positive" | "negative" | "both">("positive");
+    const [difficulty, setDifficulty] = useState<"trivial" | "easy" | "medium" | "hard">("easy");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,8 +23,10 @@ export function CreateHabitForm({ onClose }: { onClose: () => void }) {
             await create({
                 title,
                 description,
-                frequency: ["Daily"], // Default for now
-                xpReward,
+                frequency: ["Daily"],
+                xpReward: 0, // Legacy, calculated on backend now
+                type,
+                difficulty,
             });
             onClose();
         } catch (error) {
@@ -36,7 +39,7 @@ export function CreateHabitForm({ onClose }: { onClose: () => void }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div className="flex justify-between items-center mb-2">
-                <h3 className="font-bold">New Quest</h3>
+                <h3 className="font-bold">New Habit</h3>
                 <button type="button" onClick={onClose} className="text-text-muted hover:text-text-primary">
                     <X className="w-5 h-5" />
                 </button>
@@ -55,32 +58,48 @@ export function CreateHabitForm({ onClose }: { onClose: () => void }) {
             </div>
 
             <div>
-                <label className="block text-sm font-medium mb-1">Description (Optional)</label>
+                <label className="block text-sm font-medium mb-1">Notes</label>
                 <input
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg bg-bg-tertiary border border-border focus:border-primary focus:outline-none transition-colors"
-                    placeholder="e.g., 8 glasses a day"
+                    placeholder="Add notes..."
                 />
             </div>
 
-            <div>
-                <label className="block text-sm font-medium mb-1">XP Reward</label>
-                <div className="flex gap-2">
-                    {[10, 25, 50, 100].map((xp) => (
-                        <button
-                            key={xp}
-                            type="button"
-                            onClick={() => setXpReward(xp)}
-                            className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${xpReward === xp
-                                    ? "bg-xp-color text-black shadow-glow"
-                                    : "bg-bg-tertiary text-text-secondary hover:bg-bg-elevated"
-                                }`}
-                        >
-                            {xp} XP
-                        </button>
-                    ))}
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-sm font-medium mb-1">Type</label>
+                    <div className="flex gap-1 bg-bg-tertiary p-1 rounded-lg">
+                        {(["positive", "negative", "both"] as const).map((t) => (
+                            <button
+                                key={t}
+                                type="button"
+                                onClick={() => setType(t)}
+                                className={`flex-1 py-1.5 rounded-md text-xs font-medium capitalize transition-all ${type === t
+                                        ? "bg-bg-elevated shadow-sm text-primary"
+                                        : "text-text-muted hover:text-text-primary"
+                                    }`}
+                            >
+                                {t === "both" ? "+/-" : t === "positive" ? "+" : "-"}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium mb-1">Difficulty</label>
+                    <select
+                        value={difficulty}
+                        onChange={(e) => setDifficulty(e.target.value as any)}
+                        className="w-full px-3 py-2 rounded-lg bg-bg-tertiary border border-border focus:border-primary focus:outline-none text-sm"
+                    >
+                        <option value="trivial">Trivial</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
                 </div>
             </div>
 
@@ -89,7 +108,7 @@ export function CreateHabitForm({ onClose }: { onClose: () => void }) {
                     Cancel
                 </Button>
                 <Button type="submit" variant="gamified" disabled={isLoading || !title}>
-                    {isLoading ? "Creating..." : "Create Quest"}
+                    {isLoading ? "Creating..." : "Create"}
                 </Button>
             </div>
         </form>

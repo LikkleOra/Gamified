@@ -2,19 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, CheckSquare, Timer, Trophy, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Timer, Trophy, Settings, LogOut, Heart, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { name: "Habits", href: "/dashboard/habits", icon: CheckSquare },
     { name: "Pomodoro", href: "/dashboard/pomodoro", icon: Timer },
-    { name: "Leaderboard", href: "/dashboard/leaderboard", icon: Trophy },
+    { name: "Progress", href: "/dashboard/progress", icon: Trophy },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export function Sidebar() {
     const pathname = usePathname();
+    const { user } = useUser();
+    const userData = useQuery(api.users.get);
+
+    const level = userData?.level || 1;
+    const xp = userData?.xp || 0;
+    const xpForNextLevel = 1000; // Fixed 1000 XP per level for now as per users.ts
+    const currentLevelXp = xp % 1000;
+    const xpProgress = (currentLevelXp / xpForNextLevel) * 100;
 
     return (
         <div className="flex h-full w-64 flex-col glass border-r border-border/50">
@@ -23,25 +34,44 @@ export function Sidebar() {
                 <span className="text-2xl font-bold gradient-text">Gamified</span>
             </div>
 
-            {/* User Stats (Mocked for now) */}
+            {/* User Stats */}
             <div className="p-4 m-4 rounded-xl bg-bg-elevated border border-border/50">
                 <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold">
-                        JD
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold overflow-hidden">
+                        {user?.imageUrl ? (
+                            <img src={user.imageUrl} alt={user.fullName || "User"} className="w-full h-full object-cover" />
+                        ) : (
+                            <span>{user?.firstName?.[0] || "U"}</span>
+                        )}
                     </div>
-                    <div>
-                        <div className="font-semibold">John Doe</div>
-                        <div className="text-xs text-text-secondary">Level 5 Adventurer</div>
+                    <div className="overflow-hidden">
+                        <div className="font-semibold truncate">{user?.fullName || "User"}</div>
+                        <div className="text-xs text-text-secondary">Level {level} Adventurer</div>
+                    </div>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                    <div className="flex items-center gap-1 text-rose-500">
+                        <Heart className="w-3 h-3 fill-current" />
+                        <span className="font-bold">{userData?.hp || 50} / {userData?.maxHp || 50} HP</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-amber-500">
+                        <Coins className="w-3 h-3 fill-current" />
+                        <span className="font-bold">{Math.floor(userData?.gold || 0)} Gold</span>
                     </div>
                 </div>
 
                 {/* XP Bar */}
                 <div className="w-full h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                    <div className="h-full bg-gradient-to-r from-xp-color to-warning w-[70%] animate-pulse"></div>
+                    <div
+                        className="h-full bg-gradient-to-r from-xp-color to-warning transition-all duration-500"
+                        style={{ width: `${xpProgress}%` }}
+                    ></div>
                 </div>
                 <div className="flex justify-between text-xs text-text-muted mt-1">
-                    <span>700 XP</span>
-                    <span>1000 XP</span>
+                    <span>{currentLevelXp} XP</span>
+                    <span>{xpForNextLevel} XP</span>
                 </div>
             </div>
 
