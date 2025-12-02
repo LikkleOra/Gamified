@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as badges from "../badges.js";
 import type * as dailies from "../dailies.js";
 import type * as habits from "../habits.js";
 import type * as pomodoro from "../pomodoro.js";
@@ -22,6 +23,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  badges: typeof badges;
   dailies: typeof dailies;
   habits: typeof habits;
   pomodoro: typeof pomodoro;

@@ -15,9 +15,33 @@ export function PomodoroTimer() {
     const [timeLeft, setTimeLeft] = useState(WORK_TIME);
     const [isActive, setIsActive] = useState(false);
     const [mode, setMode] = useState<"work" | "short" | "long">("work");
+    const [durations, setDurations] = useState({ work: 25, short: 5, long: 15 });
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-    const completePomodoroSession = useMutation(api.pomodoro.complete);
+    const completePomodoroSession = useMutation(api.pomodoro.completeSession);
+
+    // Load settings
+    useEffect(() => {
+        const savedSettings = localStorage.getItem("pomodoroSettings");
+        if (savedSettings) {
+            try {
+                const parsed = JSON.parse(savedSettings);
+                setDurations({
+                    work: parsed.workDuration || 25,
+                    short: parsed.shortBreakDuration || 5,
+                    long: parsed.longBreakDuration || 15,
+                });
+                // Update current timer if not active
+                if (!isActive) {
+                    if (mode === "work") setTimeLeft((parsed.workDuration || 25) * 60);
+                    else if (mode === "short") setTimeLeft((parsed.shortBreakDuration || 5) * 60);
+                    else setTimeLeft((parsed.longBreakDuration || 15) * 60);
+                }
+            } catch (e) {
+                console.error("Failed to parse settings", e);
+            }
+        }
+    }, []);
 
     const toggleTimer = () => {
         setIsActive(!isActive);
@@ -25,17 +49,17 @@ export function PomodoroTimer() {
 
     const resetTimer = () => {
         setIsActive(false);
-        if (mode === "work") setTimeLeft(WORK_TIME);
-        else if (mode === "short") setTimeLeft(SHORT_BREAK);
-        else setTimeLeft(LONG_BREAK);
+        if (mode === "work") setTimeLeft(durations.work * 60);
+        else if (mode === "short") setTimeLeft(durations.short * 60);
+        else setTimeLeft(durations.long * 60);
     };
 
     const changeMode = (newMode: "work" | "short" | "long") => {
         setMode(newMode);
         setIsActive(false);
-        if (newMode === "work") setTimeLeft(WORK_TIME);
-        else if (newMode === "short") setTimeLeft(SHORT_BREAK);
-        else setTimeLeft(LONG_BREAK);
+        if (newMode === "work") setTimeLeft(durations.work * 60);
+        else if (newMode === "short") setTimeLeft(durations.short * 60);
+        else setTimeLeft(durations.long * 60);
     };
 
     useEffect(() => {
@@ -50,7 +74,7 @@ export function PomodoroTimer() {
             // Timer finished!
             if (mode === "work") {
                 // Award XP here
-                const duration = mode === "work" ? 25 : mode === "short" ? 5 : 15;
+                const duration = durations.work;
                 completePomodoroSession({ duration })
                     .then(() => {
                         console.log(`Completed ${duration} min session, earned ${duration} XP!`);
@@ -66,7 +90,7 @@ export function PomodoroTimer() {
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current);
         };
-    }, [isActive, timeLeft, mode, completePomodoroSession]);
+    }, [isActive, timeLeft, mode, completePomodoroSession, durations]);
 
     const formatTime = (seconds: number) => {
         const mins = Math.floor(seconds / 60);
@@ -74,7 +98,8 @@ export function PomodoroTimer() {
         return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
 
-    const progress = 100 - (timeLeft / (mode === "work" ? WORK_TIME : mode === "short" ? SHORT_BREAK : LONG_BREAK)) * 100;
+    const totalTime = mode === "work" ? durations.work * 60 : mode === "short" ? durations.short * 60 : durations.long * 60;
+    const progress = 100 - (timeLeft / totalTime) * 100;
 
     return (
         <div className="flex flex-col items-center justify-center p-8 glass rounded-3xl max-w-md mx-auto relative overflow-hidden">

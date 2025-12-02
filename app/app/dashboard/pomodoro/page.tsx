@@ -18,6 +18,37 @@ export default function PomodoroPage() {
     const [soundEnabled, setSoundEnabled] = useState(true);
     const [showSettings, setShowSettings] = useState(false);
 
+    // Load settings from localStorage
+    useEffect(() => {
+        const savedSettings = localStorage.getItem("pomodoroSettings");
+        if (savedSettings) {
+            try {
+                const parsed = JSON.parse(savedSettings);
+                setWorkDuration(parsed.workDuration || 25);
+                setShortBreakDuration(parsed.shortBreakDuration || 5);
+                setLongBreakDuration(parsed.longBreakDuration || 15);
+                setAutoStartBreaks(parsed.autoStartBreaks || false);
+                setAutoStartPomodoros(parsed.autoStartPomodoros || false);
+                setSoundEnabled(parsed.soundEnabled ?? true);
+            } catch (e) {
+                console.error("Failed to parse settings", e);
+            }
+        }
+    }, []);
+
+    // Save settings to localStorage
+    useEffect(() => {
+        const settings = {
+            workDuration,
+            shortBreakDuration,
+            longBreakDuration,
+            autoStartBreaks,
+            autoStartPomodoros,
+            soundEnabled,
+        };
+        localStorage.setItem("pomodoroSettings", JSON.stringify(settings));
+    }, [workDuration, shortBreakDuration, longBreakDuration, autoStartBreaks, autoStartPomodoros, soundEnabled]);
+
     // Timer state
     const [mode, setMode] = useState<TimerMode>("work");
     const [timeLeft, setTimeLeft] = useState(workDuration * 60);
@@ -184,25 +215,26 @@ export default function PomodoroPage() {
             {/* Timer Display */}
             <div className="relative mb-8">
                 {/* Progress Ring */}
-                <svg className="w-80 h-80 transform -rotate-90">
+                <svg className="w-64 h-64 md:w-80 md:h-80 transform -rotate-90">
                     <circle
-                        cx="160"
-                        cy="160"
-                        r="140"
+                        cx="50%"
+                        cy="50%"
+                        r="45%"
                         stroke="currentColor"
                         strokeWidth="8"
                         fill="none"
                         className="text-bg-elevated"
                     />
                     <circle
-                        cx="160"
-                        cy="160"
-                        r="140"
+                        cx="50%"
+                        cy="50%"
+                        r="45%"
                         stroke="currentColor"
                         strokeWidth="8"
                         fill="none"
-                        strokeDasharray={`${2 * Math.PI * 140}`}
-                        strokeDashoffset={`${2 * Math.PI * 140 * (1 - progress / 100)}`}
+                        strokeDasharray={`${2 * Math.PI * 45}%`}
+                        strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}%`}
+                        pathLength={100}
                         className={`transition-all duration-1000 ${mode === "work" ? "text-rose-500" : mode === "shortBreak" ? "text-blue-500" : "text-purple-500"
                             }`}
                         strokeLinecap="round"
@@ -212,8 +244,8 @@ export default function PomodoroPage() {
                 {/* Time Display */}
                 <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                        <div className="text-7xl font-bold mb-2">{displayTime}</div>
-                        <div className="text-sm text-text-muted uppercase tracking-wider">
+                        <div className="text-5xl md:text-7xl font-bold mb-2">{displayTime}</div>
+                        <div className="text-xs md:text-sm text-text-muted uppercase tracking-wider">
                             {mode === "work" ? "Focus Time" : mode === "shortBreak" ? "Short Break" : "Long Break"}
                         </div>
                     </div>

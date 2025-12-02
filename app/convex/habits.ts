@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { api } from "./_generated/api";
 
 const DIFFICULTY_REWARDS = {
     trivial: { xp: 5, gold: 0.5, damage: 2 },
@@ -135,6 +136,21 @@ export const check = mutation({
                     gold: newGold,
                     level: newLevel
                 });
+
+                // Check for badge awards
+                const totalHabitLogs = await ctx.db
+                    .query("habitLogs")
+                    .withIndex("by_user_date", (q) => q.eq("userId", identity.subject))
+                    .collect();
+
+                const positiveHabits = totalHabitLogs.filter(log => log.type === "positive");
+
+                // Award badges based on habit count
+                if (positiveHabits.length === 1) {
+                    await ctx.runMutation(api.badges.awardBadge, { slug: "first-step" });
+                } else if (positiveHabits.length === 100) {
+                    await ctx.runMutation(api.badges.awardBadge, { slug: "habit-master" });
+                }
             }
         }
     },

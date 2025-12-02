@@ -10,12 +10,14 @@ import { TodoList } from "@/components/features/todos/TodoList";
 import { PomodoroTimer } from "@/components/features/pomodoro/Timer";
 import { RewardShop } from "@/components/features/rewards/RewardShop";
 import { LevelUpModal } from "@/components/features/gamification/LevelUpModal";
+import { BadgeList } from "@/components/features/gamification/BadgeList";
 
 export default function DashboardPage() {
     console.log("Rendering Dashboard Page");
     const { user } = useUser();
     const syncUser = useMutation(api.users.syncUser);
     const syncDailies = useMutation(api.dailies.sync);
+    const checkStreak = useMutation(api.users.checkStreak);
     const userData = useQuery(api.users.get);
 
     const [showLevelUp, setShowLevelUp] = useState(false);
@@ -30,8 +32,9 @@ export default function DashboardPage() {
                 email: user.primaryEmailAddress?.emailAddress || "",
             });
             syncDailies(); // Check for resets
+            checkStreak(); // Check and update streak
         }
-    }, [user, syncUser, syncDailies]);
+    }, [user, syncUser, syncDailies, checkStreak]);
 
     // Check for Level Up
     useEffect(() => {
@@ -74,8 +77,8 @@ export default function DashboardPage() {
                         key={tab}
                         onClick={() => setActiveTab(tab)}
                         className={`flex-1 py-2 rounded-lg text-sm font-bold capitalize transition-all ${activeTab === tab
-                                ? "bg-primary text-white shadow-lg"
-                                : "text-text-muted hover:text-text-primary"
+                            ? "bg-primary text-white shadow-lg"
+                            : "text-text-muted hover:text-text-primary"
                             }`}
                     >
                         {tab}
@@ -106,6 +109,11 @@ export default function DashboardPage() {
                         <TodoList />
                     </div>
                 </div>
+            </div>
+
+            {/* Achievements Section */}
+            <div className="glass p-6 rounded-2xl">
+                <BadgeList />
             </div>
 
             {/* Reward Shop */}

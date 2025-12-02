@@ -57,13 +57,31 @@ export default defineSchema({
         icon: v.optional(v.string()),
     }).index("by_user", ["userId"]),
 
+    badges: defineTable({
+        slug: v.string(),
+        title: v.string(),
+        description: v.string(),
+        icon: v.string(),
+        category: v.union(v.literal("habit"), v.literal("pomodoro"), v.literal("streak"), v.literal("level")),
+        conditionValue: v.number(),
+    }).index("by_slug", ["slug"]),
+
+    userBadges: defineTable({
+        userId: v.string(),
+        badgeId: v.id("badges"),
+        earnedAt: v.number(),
+    })
+        .index("by_user", ["userId"])
+        .index("by_user_badge", ["userId", "badgeId"]),
+
     users: defineTable({
         userId: v.string(), // Clerk ID
         name: v.string(),
         email: v.string(),
         level: v.number(),
         xp: v.number(),
-        streak: v.number(),
+        streak: v.number(), // Current streak
+        longestStreak: v.optional(v.number()),
         gold: v.optional(v.number()),
         hp: v.optional(v.number()),
         maxHp: v.optional(v.number()),

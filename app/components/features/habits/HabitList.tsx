@@ -3,7 +3,7 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { format } from "date-fns";
-import { Plus, Minus, Trash2 } from "lucide-react";
+import { Plus, Minus, Trash2, Edit2, Zap, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -14,82 +14,105 @@ export function HabitList() {
     const habits = useQuery(api.habits.get);
     const logs = useQuery(api.habits.getTodayLogs, { date: today });
     const check = useMutation(api.habits.check);
-    const uncheck = useMutation(api.habits.uncheck);
     const [isCreating, setIsCreating] = useState(false);
 
     if (!habits || !logs) {
         return <div className="animate-pulse">Loading habits...</div>;
     }
 
-    const handleCheck = async (habitId: string, asNegative: boolean = false) => {
+    const onCheck = async (habitId: string, asNegative: boolean = false) => {
         await check({ habitId: habitId as any, date: today, asNegative });
     };
 
-    // We don't really "uncheck" habits in the new model easily unless we show a history log.
-    // For now, let's just allow adding + and -. Undo is harder with multiple clicks.
-    // We can add a small "undo" toast or button if needed, but for MVP let's stick to forward progress.
+    const getHabitColor = (id: string) => {
+        const colors = [
+            { bg: "bg-emerald-500", text: "text-emerald-500" },
+            { bg: "bg-cyan-500", text: "text-cyan-500" },
+            { bg: "bg-amber-500", text: "text-amber-500" },
+            { bg: "bg-rose-500", text: "text-rose-500" },
+            { bg: "bg-indigo-500", text: "text-indigo-500" },
+        ];
+        // Simple hash
+        let hash = 0;
+        for (let i = 0; i < id.length; i++) {
+            hash = id.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colors[Math.abs(hash) % colors.length];
+    };
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center justify-between">
-                <Button size="sm" variant="ghost" onClick={() => setIsCreating(!isCreating)} className="ml-auto">
-                    <Plus className="w-4 h-4" />
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold hidden md:block">Habits</h2>
+                <Button
+                    onClick={() => setIsCreating(!isCreating)}
+                    size="sm"
+                    className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
+                >
+                    <Plus className="w-4 h-4 mr-2" /> New Habit
                 </Button>
             </div>
 
             {isCreating && (
-                <div className="mb-4 animate-fadeIn">
+                <div className="mb-4">
                     <CreateHabitForm onClose={() => setIsCreating(false)} />
                 </div>
             )}
 
-            <div className="space-y-2">
-                {habits.length === 0 && !isCreating && (
-                    <div className="text-center py-8 text-text-muted text-sm">
-                        No habits yet. Add one!
-                    </div>
-                )}
-
+            <div className="space-y-3">
                 {habits.map((habit) => {
-                    const type = habit.type || "positive"; // Default to positive
-                    const positiveCount = logs.filter(l => l.habitId === habit._id && l.type === "positive").length;
-                    const negativeCount = logs.filter(l => l.habitId === habit._id && l.type === "negative").length;
+                    const color = getHabitColor(habit._id);
+                    const type = habit.type || "positive";
+                    const isPositive = type === "positive" || type === "both";
+                    const isNegative = type === "negative" || type === "both";
 
                     return (
-                        <div
-                            key={habit._id}
-                            className="group glass p-3 rounded-xl border border-border hover:border-primary/50 transition-all duration-200 flex items-center justify-between"
-                        >
-                            <div className="flex-1">
-                                <div className="font-medium">{habit.title}</div>
-                                <div className="text-xs text-text-secondary flex gap-2">
-                                    {habit.difficulty && <span className="capitalize">{habit.difficulty}</span>}
-                                    <span>•</span>
-                                    <span>Streak: {habit.streak || 0}</span>
+                        <div key={habit._id} className="flex h-24 rounded-xl overflow-hidden shadow-lg bg-bg-elevated">
+                            {/* Positive Action (Left) */}
+                            <button
+                                onClick={() => onCheck(habit._id, false)}
+                                disabled={!isPositive}
+                                className={`w-16 flex items-center justify-center transition-colors ${isPositive
+                                    ? `${color.bg} hover:brightness-110 active:brightness-90`
+                                    : "bg-bg-tertiary cursor-not-allowed opacity-50"
+                                    }`}
+                            >
+                                <Plus className={`w-8 h-8 ${isPositive ? "text-white" : "text-text-muted"}`} />
+                            </button>
+
+                            {/* Content (Center) */}
+                            <div className="flex-1 p-3 flex flex-col justify-center border-y border-border/50 bg-bg-elevated relative group">
+                                <div className="flex justify-between items-start">
+                                    <h3 className="font-bold text-base leading-tight mb-1">{habit.title}</h3>
+                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity absolute top-2 right-2">
+                                        <button className="text-text-muted hover:text-primary"><Edit2 className="w-3 h-3" /></button>
+                                        <button className="text-text-muted hover:text-error"><Trash2 className="w-3 h-3" /></button>
+                                    </div>
+                                </div>
+                                {habit.description && <p className="text-xs text-text-secondary line-clamp-2">{habit.description}</p>}
+                                <div className="mt-2 flex items-center gap-2 text-[10px] text-text-muted uppercase tracking-wider">
+                                    <span className="flex items-center gap-1">
+                                        <Zap className="w-3 h-3" /> +{habit.difficulty === "hard" ? "2" : "1"}
+                                    </span>
+                                    {(habit.streak ?? 0) > 0 && (
+                                        <span className="flex items-center gap-1 text-amber-500">
+                                            <Trophy className="w-3 h-3" /> {habit.streak}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                {(type === "positive" || type === "both") && (
-                                    <button
-                                        onClick={() => handleCheck(habit._id, false)}
-                                        className="w-8 h-8 rounded-lg bg-success/10 text-success border border-success/30 hover:bg-success hover:text-white flex items-center justify-center transition-colors"
-                                    >
-                                        <Plus className="w-5 h-5" />
-                                        {positiveCount > 0 && <span className="ml-1 text-xs font-bold">{positiveCount}</span>}
-                                    </button>
-                                )}
-
-                                {(type === "negative" || type === "both") && (
-                                    <button
-                                        onClick={() => handleCheck(habit._id, true)}
-                                        className="w-8 h-8 rounded-lg bg-error/10 text-error border border-error/30 hover:bg-error hover:text-white flex items-center justify-center transition-colors"
-                                    >
-                                        <Minus className="w-5 h-5" />
-                                        {negativeCount > 0 && <span className="ml-1 text-xs font-bold">{negativeCount}</span>}
-                                    </button>
-                                )}
-                            </div>
+                            {/* Negative Action (Right) */}
+                            <button
+                                onClick={() => onCheck(habit._id, true)}
+                                disabled={!isNegative}
+                                className={`w-16 flex items-center justify-center transition-colors ${isNegative
+                                    ? `${color.bg} hover:brightness-110 active:brightness-90`
+                                    : "bg-bg-tertiary cursor-not-allowed opacity-50"
+                                    }`}
+                            >
+                                <Minus className={`w-8 h-8 ${isNegative ? "text-white" : "text-text-muted"}`} />
+                            </button>
                         </div>
                     );
                 })}
